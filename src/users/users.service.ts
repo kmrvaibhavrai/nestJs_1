@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { NotFoundError } from 'rxjs';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
+import { loginDTO } from './dto/login.dto';
 
 @Injectable()
 export class UsersService {
@@ -27,5 +28,14 @@ export class UsersService {
         const user = await this.findByEmail(UpdatePasswordDTO.email);
         user.password = UpdatePasswordDTO.newPassword;
         return user.save();
+    }
+
+    async login(body) {
+        const user = await this.userModel.findOne({email:body.email, password: body.password})
+        if(!user) {
+            return '';
+        } else {
+            return user;
+        }
     }
 }

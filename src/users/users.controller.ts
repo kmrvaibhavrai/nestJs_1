@@ -4,6 +4,7 @@ import { get } from 'https';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { User } from './schemas/users.schema';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
+import { loginDTO } from './dto/login.dto';
 
 @Controller('users')
 export class UsersController {
@@ -22,5 +23,15 @@ export class UsersController {
     @Patch('password')
     async updatePassword(@Body() UpdatePasswordDTO:UpdatePasswordDTO): Promise<User> {
         return this.userService.updatePassword(UpdatePasswordDTO)
+    }
+
+    @Post('/login')
+    async login(@Body() body:loginDTO) {
+        const data =  await this.userService.login(body)
+        return {
+            statusCode: 200,
+            message: 'User found',
+            data: data
+        }
     }
 }
